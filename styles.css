@@ -142,10 +142,10 @@ body::before {
 }
 
 .hero-copy h2 {
-  max-width: 12ch;
-  font-size: clamp(2.8rem, 6vw, 5.6rem);
-  line-height: 0.98;
-  letter-spacing: -0.04em;
+  max-width: 20ch;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
 }
 
 .hero-text,
@@ -487,7 +487,7 @@ input[type="range"] {
 }
 
 .visual-grid {
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
 }
 
 .chart-card canvas,
@@ -521,7 +521,8 @@ input[type="range"] {
   .hero-grid,
   .demo-grid,
   .architecture-grid,
-  .rules-grid {
+  .rules-grid,
+  .visual-grid {
     grid-template-columns: 1fr;
   }
 

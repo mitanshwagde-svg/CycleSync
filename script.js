@@ -273,16 +273,17 @@ function drawSurface(canvas, marker = null) {
 }
 
 function updateGauge(value) {
+  if (!gaugeNeedle || !gaugeProgress) return;
   const clamped = Math.max(0, Math.min(60, value));
   const ratio = clamped / 60;
   const angle = -90 + ratio * 180;
-  gaugeNeedle.setAttribute("transform", `rotate(${angle} 120 130)`);
+  gaugeNeedle.style.transform = `rotate(${angle}deg)`;
 
   const startX = 20;
   const startY = 130;
   const endX = 220;
   const endY = 130;
-  const largeArc = ratio > 0.5 ? 1 : 0;
+  const largeArc = 0;
   const sweepAngle = Math.PI * ratio;
   const x = 120 - 100 * Math.cos(sweepAngle);
   const y = 130 - 100 * Math.sin(sweepAngle);
@@ -293,6 +294,7 @@ function updateGauge(value) {
 }
 
 function updatePresetState(dirt, load) {
+  if (!presetButtons) return;
   presetButtons.forEach((button) => {
     const isMatch = Number(button.dataset.dirt) === Number(dirt) && Number(button.dataset.load) === Number(load);
     button.classList.toggle("is-active", isMatch);
@@ -300,6 +302,7 @@ function updatePresetState(dirt, load) {
 }
 
 function updateUI() {
+  if (!dirtSlider || !loadSlider) return;
   const dirt = Number(dirtSlider.value);
   const load = Number(loadSlider.value);
   const { crisp, dominantRule } = inferWashTime(dirt, load);
@@ -307,24 +310,24 @@ function updateUI() {
   const dirtLabel = classifyBand(dirt, 3.5, 6.5, ["Low", "Medium", "High"]);
   const loadLabel = classifyBand(load, 3.5, 6.5, ["Small", "Medium", "Large"]);
 
-  dirtValue.textContent = dirt.toFixed(1);
-  loadValue.textContent = load.toFixed(1);
-  washTimeEl.textContent = `${crisp.toFixed(2)} min`;
-  cycleNameEl.textContent = cycle;
-  inputProfileEl.textContent = `${dirtLabel} dirt | ${loadLabel} load`;
-  dominantRuleEl.textContent = dominantRule;
-  heroTimeEl.textContent = `${crisp.toFixed(2)} min`;
-  heroCycleEl.textContent = cycle;
+  if (dirtValue) dirtValue.textContent = dirt.toFixed(1);
+  if (loadValue) loadValue.textContent = load.toFixed(1);
+  if (washTimeEl) washTimeEl.textContent = `${crisp.toFixed(2)} min`;
+  if (cycleNameEl) cycleNameEl.textContent = cycle;
+  if (inputProfileEl) inputProfileEl.textContent = `${dirtLabel} dirt | ${loadLabel} load`;
+  if (dominantRuleEl) dominantRuleEl.textContent = dominantRule;
+  if (heroTimeEl) heroTimeEl.textContent = `${crisp.toFixed(2)} min`;
+  if (heroCycleEl) heroCycleEl.textContent = cycle;
 
-  systemInsightEl.innerHTML = `
+  if (systemInsightEl) {
+    systemInsightEl.innerHTML = `
     <p>
       The controller reads <b>${dirt.toFixed(1)}</b> as <b>${dirtLabel}</b> dirt and <b>${load.toFixed(1)}</b> as
       <b>${loadLabel}</b> load, then activates the fuzzy rule base to produce a smooth recommendation of
       <b>${crisp.toFixed(2)} minutes</b>.
     </p>
     <p>
-      Instead of abrupt switching between fixed cycles, the system blends overlapping membership functions and
-      chooses a response that feels closer to how a modern smart appliance should behave.
+      Instead of abrupt switching between fixed cycles, the system blends overlapping membership functions. This provides continuous control outputs rather than discrete thresholds.
     </p>
     <p>
       The strongest active rule right now is <b>${dominantRule}</b>, and the resulting cycle classification is
@@ -332,14 +335,17 @@ function updateUI() {
     </p>
   `;
 
+  }
+
   updateGauge(crisp);
-  drawSurface(surfaceCanvas, { dirt, load });
-  drawSurface(miniSurfaceCanvas, { dirt, load });
+  if (surfaceCanvas) drawSurface(surfaceCanvas, { dirt, load });
+  if (miniSurfaceCanvas) drawSurface(miniSurfaceCanvas, { dirt, load });
   updatePresetState(dirt, load);
 }
 
 function setupGaugeGradient() {
   const svg = document.querySelector(".gauge");
+  if (!svg) return;
   const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
   defs.innerHTML = `
     <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -352,21 +358,31 @@ function setupGaugeGradient() {
 }
 
 function bindEvents() {
-  [dirtSlider, loadSlider].forEach((input) => {
-    input.addEventListener("input", updateUI);
-  });
-
-  presetButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      dirtSlider.value = button.dataset.dirt;
-      loadSlider.value = button.dataset.load;
-      updateUI();
+  if (dirtSlider && loadSlider) {
+    [dirtSlider, loadSlider].forEach((input) => {
+      input.addEventListener("input", updateUI);
     });
-  });
+  }
+
+  if (presetButtons) {
+    presetButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        dirtSlider.value = button.dataset.dirt;
+        loadSlider.value = button.dataset.load;
+        updateUI();
+      });
+    });
+  }
 }
 
 setupGaugeGradient();
-renderRules();
-drawMembershipFunctions();
+if (ruleList) renderRules();
+if (membershipCanvas) drawMembershipFunctions();
+if (miniSurfaceCanvas && (!dirtSlider)) {
+  drawSurface(miniSurfaceCanvas, { dirt: 5, load: 5 });
+}
+if (surfaceCanvas && (!dirtSlider)) {
+  drawSurface(surfaceCanvas, { dirt: 5, load: 5 });
+}
 bindEvents();
 updateUI();

@@ -20,29 +20,28 @@
         <div class="brand">
           <span class="brand-mark">SW</span>
           <div>
-            <p class="eyebrow">Portfolio Project</p>
+            <p class="eyebrow">Fuzzy Controller</p>
             <h1>SmartWash Pro</h1>
           </div>
         </div>
         <div class="topbar-links">
-          <a href="#demo">Live Demo</a>
+          <a href="index.html">Home</a>
+          <a href="demo.html">Live Demo</a>
           <a href="#system">System Design</a>
-          <a href="#rules">Rule Base</a>
+          <a href="rules.html">Rule Base</a>
         </div>
       </nav>
 
       <div class="hero-grid">
         <section class="hero-copy">
           <p class="eyebrow">Fuzzy Systems | Intelligent Control | Front-End Engineering</p>
-          <h2>Washing-machine cycle optimization that looks like a serious engineering product.</h2>
+          <h2>Optimal machine cycle demo.</h2>
           <p class="hero-text">
-            This project transforms a classic fuzzy inference assignment into a polished interactive experience.
-            Visitors can test dirt level and load size in real time, inspect the inference behavior, and understand
-            how the rule base produces smooth machine decisions instead of hard-coded thresholds.
+            An interactive web-based implementation of a fuzzy inference system for washing machines. Test different dirt levels and load sizes in real time, and observe the rule-based decision-making process producing continuous control outputs.
           </p>
           <div class="hero-actions">
-            <a class="button button-primary" href="#demo">Launch Interactive Demo</a>
-            <a class="button button-secondary" href="#system">Explore Architecture</a>
+            <a class="button button-primary" href="demo.html">Launch Interactive Demo</a>
+            <a class="button button-secondary" href="#system">System Architecture</a>
           </div>
           <ul class="hero-metrics">
             <li>
@@ -85,100 +84,10 @@
     </header>
 
     <main>
-      <section id="demo" class="section">
-        <div class="section-heading">
-          <p class="eyebrow">Interactive Demo</p>
-          <h2>Test the controller like a product reviewer would.</h2>
-        </div>
-
-        <div class="demo-grid">
-          <article class="card control-card">
-            <div class="card-heading">
-              <h3>Control Inputs</h3>
-              <p>Drag the sliders and watch the fuzzy inference update live.</p>
-            </div>
-
-            <label class="slider-block" for="dirtSlider">
-              <div class="slider-title">
-                <span>Dirt Level</span>
-                <strong id="dirtValue">5.0</strong>
-              </div>
-              <input id="dirtSlider" type="range" min="0" max="10" step="0.1" value="5">
-              <div class="slider-scale">
-                <span>Low</span>
-                <span>Medium</span>
-                <span>High</span>
-              </div>
-            </label>
-
-            <label class="slider-block" for="loadSlider">
-              <div class="slider-title">
-                <span>Load Size</span>
-                <strong id="loadValue">5.0</strong>
-              </div>
-              <input id="loadSlider" type="range" min="0" max="10" step="0.1" value="5">
-              <div class="slider-scale">
-                <span>Small</span>
-                <span>Medium</span>
-                <span>Large</span>
-              </div>
-            </label>
-
-            <div class="preset-group">
-              <button class="chip is-active" data-dirt="5" data-load="5">Balanced Load</button>
-              <button class="chip" data-dirt="2.5" data-load="3">Quick Refresh</button>
-              <button class="chip" data-dirt="8" data-load="9">Heavy Duty</button>
-              <button class="chip" data-dirt="6.5" data-load="8">Family Cycle</button>
-            </div>
-          </article>
-
-          <article class="card output-card">
-            <div class="card-heading">
-              <h3>Decision Output</h3>
-              <p>Mamdani inference with centroid defuzzification.</p>
-            </div>
-
-            <div class="gauge-wrap">
-              <svg viewBox="0 0 240 150" class="gauge" aria-hidden="true">
-                <path class="gauge-track" d="M20 130 A100 100 0 0 1 220 130"></path>
-                <path id="gaugeProgress" class="gauge-progress" d="M20 130 A100 100 0 0 1 220 130"></path>
-                <line id="gaugeNeedle" class="gauge-needle" x1="120" y1="130" x2="120" y2="42"></line>
-                <circle class="gauge-cap" cx="120" cy="130" r="8"></circle>
-              </svg>
-              <div class="gauge-readout">
-                <span class="eyebrow">Estimated Cycle Time</span>
-                <strong id="washTime">30.00 min</strong>
-                <p id="cycleName">Normal Wash</p>
-              </div>
-            </div>
-
-            <div class="output-grid">
-              <div class="stat-tile">
-                <span>Input Profile</span>
-                <strong id="inputProfile">Medium dirt | Medium load</strong>
-              </div>
-              <div class="stat-tile">
-                <span>Dominant Rule</span>
-                <strong id="dominantRule">Medium + Medium -> Medium</strong>
-              </div>
-            </div>
-          </article>
-
-          <article class="card explanation-card">
-            <div class="card-heading">
-              <h3>System Insight</h3>
-              <p>Built to explain itself clearly in a viva, interview, or portfolio review.</p>
-            </div>
-
-            <div id="systemInsight" class="insight-copy"></div>
-          </article>
-        </div>
-      </section>
-
-      <section id="system" class="section section-dark">
+      <section id="system" class="section section-dark" style="padding-top: 0;">
         <div class="section-heading">
           <p class="eyebrow">System Design</p>
-          <h2>Readable engineering, not a toy interface.</h2>
+          <h2>System Architecture Overview.</h2>
         </div>
 
         <div class="architecture-grid">
@@ -216,15 +125,6 @@
             <canvas id="surfaceCanvas" width="760" height="360"></canvas>
           </article>
         </div>
-      </section>
-
-      <section id="rules" class="section">
-        <div class="section-heading">
-          <p class="eyebrow">Rule Base</p>
-          <h2>Nine rules, presented like a product system specification.</h2>
-        </div>
-
-        <div id="ruleList" class="rules-grid"></div>
       </section>
     </main>
   </div>
