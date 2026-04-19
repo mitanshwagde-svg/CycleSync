@@ -1,88 +1,89 @@
-# SmartWash Pro
+<div align="center">
+  <h1>🌊 CycleSync</h1>
+  <p><strong>Intelligent Fuzzy-Logic Washing Machine Dashboard</strong></p>
+  
+  [![JavaScript](https://img.shields.io/badge/JavaScript-ES6-F7DF1E?style=flat-square&logo=javascript&logoColor=black)](#)
+  [![HTML5](https://img.shields.io/badge/HTML5-Dashboard-E34F26?style=flat-square&logo=html5&logoColor=white)](#)
+  [![CSS3](https://img.shields.io/badge/CSS3-Grid-1572B6?style=flat-square&logo=css3&logoColor=white)](#)
+  [![MATLAB](https://img.shields.io/badge/MATLAB-Supported-e16737?style=flat-square)](#)
+</div>
 
-SmartWash Pro is a portfolio-grade fuzzy logic project that predicts washing-machine cycle time from **Dirt Level** and **Load Size**. The repo now includes both the original MATLAB implementation and a polished interactive website designed to look strong on GitHub and in front of recruiters.
+---
 
-## What is in this repo
+**CycleSync** (formerly SmartWash Pro) is a portfolio-grade fuzzy logic inference system that predicts optimal washing machine cycle times based on **Dirt Level** and **Load Size**. 
 
-- `index.html`, `styles.css`, `script.js`
-  Browser-based interactive demo with live fuzzy inference, a response-surface visualization, membership-function charts, and a premium landing page.
-- `washing_machine_fis.m`
-  Base MATLAB Mamdani FIS implementation.
-- `washing_machine_fis_pro.m`
-  Professional MATLAB dashboard version.
+This repository features a fully interactive, single-page web dashboard built with vanilla web technologies, alongside the original MATLAB implementations.
 
-## Fuzzy System Design
+## ✨ Features
 
-### Inputs
+- 🎛️ **Interactive Dashboard**: A sleek, modern single-page application replacing traditional landing pages.
+- 🧠 **Live Fuzzy Inference**: Real-time Mamdani inference calculating cycle durations on the fly.
+- 📊 **Dynamic Visualizations**: 
+  - Real-time animated **Circular Progress Ring**.
+  - 3D-style **Response Surface** projection.
+  - Interactive **Membership Function** plots.
+- ⚙️ **No Dependencies**: Built entirely with Vanilla JS, HTML5, and CSS3 Grid.
 
-- **Dirt Level**: range `0-10`
-  - Low: `[0 0 4]`
-  - Medium: `[2 5 8]`
-  - High: `[6 10 10]`
-- **Load Size**: range `0-10`
-  - Small: `[0 0 4]`
-  - Medium: `[2 5 8]`
-  - Large: `[6 10 10]`
+## 🚀 Quick Start
 
-### Output
+### Web Dashboard
+No build steps or dependencies required. Simply open `index.html` in your favorite web browser!
 
-- **Wash Time**: range `0-60` minutes
-  - Short: `[0 0 20]`
-  - Medium: `[15 30 45]`
-  - Long: `[40 60 60]`
-
-### Rule Base
-
-1. IF Dirt is Low AND Load is Small THEN Time is Short
-2. IF Dirt is Low AND Load is Medium THEN Time is Short
-3. IF Dirt is Low AND Load is Large THEN Time is Medium
-4. IF Dirt is Medium AND Load is Small THEN Time is Medium
-5. IF Dirt is Medium AND Load is Medium THEN Time is Medium
-6. IF Dirt is Medium AND Load is Large THEN Time is Long
-7. IF Dirt is High AND Load is Small THEN Time is Long
-8. IF Dirt is High AND Load is Medium THEN Time is Long
-9. IF Dirt is High AND Load is Large THEN Time is Long
-
-## Run the Website Locally
-
-Open [index.html](./index.html) in a browser.
-
-If you want a local dev server, you can also run:
-
+For local development over HTTP:
 ```powershell
 python -m http.server 8000
 ```
-
 Then visit `http://localhost:8000`.
 
-## Publish on GitHub Pages
-
-1. Push this folder to a GitHub repository.
-2. Open the repository on GitHub.
-3. Go to `Settings` -> `Pages`.
-4. Under `Build and deployment`, choose `Deploy from a branch`.
-5. Select the main branch and the root folder.
-6. Save, then wait for GitHub Pages to publish the site.
-
-## MATLAB Versions
-
-Run the base MATLAB implementation with:
-
+### MATLAB Implementation
+Run the base MATLAB FIS:
 ```matlab
 washing_machine_fis
 ```
-
-Run the dashboard version with:
-
+Run the professional MATLAB dashboard:
 ```matlab
 washing_machine_fis_pro
 ```
 
-## Example Interpretation
+## 🏗️ System Architecture
 
-For:
+CycleSync uses a Mamdani fuzzy inference system to calculate precise cycle times.
 
-- `Dirt Level = 8`
-- `Load Size = 9`
+```mermaid
+graph LR
+    A[Dirt Level<br/>0-10] --> C{Fuzzy Inference<br/>Engine}
+    B[Load Size<br/>0-10] --> C
+    C --> D[Wash Time<br/>0-60 mins]
+```
 
-the predicted wash time is approximately in the **55 to 60 minute** range, which reflects a realistic heavy-duty wash recommendation.
+### 1. Linguistic Variables
+
+| Variable | Type | Range | Membership Sets |
+| :--- | :--- | :--- | :--- |
+| **Dirt Level** | Input | `0-10` | Low, Medium, High |
+| **Load Size** | Input | `0-10` | Small, Medium, Large |
+| **Wash Time** | Output | `0-60` | Short, Medium, Long |
+
+### 2. Rule Base
+
+The inference engine evaluates 9 overlapping rules rather than rigid thresholds, allowing for continuous, smooth control outputs:
+
+1. IF Dirt is **Low** AND Load is **Small** THEN Time is **Short**
+2. IF Dirt is **Low** AND Load is **Medium** THEN Time is **Short**
+3. IF Dirt is **Low** AND Load is **Large** THEN Time is **Medium**
+4. IF Dirt is **Medium** AND Load is **Small** THEN Time is **Medium**
+5. IF Dirt is **Medium** AND Load is **Medium** THEN Time is **Medium**
+6. IF Dirt is **Medium** AND Load is **Large** THEN Time is **Long**
+7. IF Dirt is **High** AND Load is **Small** THEN Time is **Long**
+8. IF Dirt is **High** AND Load is **Medium** THEN Time is **Long**
+9. IF Dirt is **High** AND Load is **Large** THEN Time is **Long**
+
+## 🌐 Deployment
+
+CycleSync is ready to be hosted on any static file server like **GitHub Pages**, Vercel, or Netlify.
+
+**To deploy to GitHub Pages:**
+1. Push this code to a GitHub repository.
+2. Navigate to `Settings` > `Pages`.
+3. Select `Deploy from a branch` and choose your `main` branch.
+4. Save and wait for your dashboard to go live.
