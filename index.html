@@ -3,132 +3,125 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SmartWash Pro | Fuzzy Logic Washing Machine Controller</title>
-  <meta
-    name="description"
-    content="A portfolio-grade fuzzy logic controller for washing-machine cycle optimization with an interactive web demo, response surface, and rule-based inference engine."
-  >
+  <title>CycleSync | Intelligent Washer Dashboard</title>
+  <meta name="description" content="CycleSync dashboard for optimal washing cycle calculations.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="page-shell">
-    <header class="hero">
-      <nav class="topbar">
-        <div class="brand">
-          <span class="brand-mark">SW</span>
-          <div>
-            <p class="eyebrow">Fuzzy Controller</p>
-            <h1>SmartWash Pro</h1>
-          </div>
+  <div class="app-container">
+    <!-- Sidebar / Control Panel -->
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark">CS</span>
+        <div>
+          <p class="eyebrow">Smart Controller</p>
+          <h1>CycleSync</h1>
         </div>
-        <div class="topbar-links">
-          <a href="index.html">Home</a>
-          <a href="demo.html">Live Demo</a>
-          <a href="#system">System Design</a>
-          <a href="rules.html">Rule Base</a>
-        </div>
-      </nav>
-
-      <div class="hero-grid">
-        <section class="hero-copy">
-          <p class="eyebrow">Fuzzy Systems | Intelligent Control | Front-End Engineering</p>
-          <h2>Optimal machine cycle demo.</h2>
-          <p class="hero-text">
-            An interactive web-based implementation of a fuzzy inference system for washing machines. Test different dirt levels and load sizes in real time, and observe the rule-based decision-making process producing continuous control outputs.
-          </p>
-          <div class="hero-actions">
-            <a class="button button-primary" href="demo.html">Launch Interactive Demo</a>
-            <a class="button button-secondary" href="#system">System Architecture</a>
-          </div>
-          <ul class="hero-metrics">
-            <li>
-              <strong>9</strong>
-              <span>Fuzzy Rules</span>
-            </li>
-            <li>
-              <strong>3</strong>
-              <span>Input/Output Linguistic Levels</span>
-            </li>
-            <li>
-              <strong>0-60</strong>
-              <span>Minute Decision Range</span>
-            </li>
-          </ul>
-        </section>
-
-        <section class="hero-panel">
-          <div class="glass-card hero-visual">
-            <div class="hero-visual-header">
-              <span class="status-dot"></span>
-              <span>Inference Engine Active</span>
-            </div>
-            <div class="hero-output">
-              <p>Current Recommendation</p>
-              <h3 id="hero-time">30.00 min</h3>
-              <span id="hero-cycle" class="pill">Normal Wash</span>
-            </div>
-            <div class="signal-bars" aria-hidden="true">
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-            <canvas id="miniSurface" width="440" height="220"></canvas>
-          </div>
-        </section>
       </div>
-    </header>
-
-    <main>
-      <section id="system" class="section section-dark" style="padding-top: 0;">
-        <div class="section-heading">
-          <p class="eyebrow">System Design</p>
-          <h2>System Architecture Overview.</h2>
+      
+      <div class="control-panel">
+        <div class="panel-header">
+          <h3>Load Configuration</h3>
+          <p>Adjust parameters to calculate cycle.</p>
         </div>
 
-        <div class="architecture-grid">
-          <article class="architecture-card">
-            <span class="architecture-index">01</span>
-            <h3>Inputs</h3>
-            <p>Dirt Level and Load Size are modeled on a 0-10 universe with overlapping fuzzy sets.</p>
-          </article>
-          <article class="architecture-card">
-            <span class="architecture-index">02</span>
-            <h3>Inference</h3>
-            <p>A Mamdani rule base blends linguistic states instead of relying on brittle threshold logic.</p>
-          </article>
-          <article class="architecture-card">
-            <span class="architecture-index">03</span>
-            <h3>Output</h3>
-            <p>Wash Time is defuzzified over a 0-60 minute range to produce smooth machine recommendations.</p>
-          </article>
-        </div>
+        <label class="slider-block" for="dirtSlider">
+          <div class="slider-title">
+            <span>Dirt Level</span>
+            <strong id="dirtValue">5.0</strong>
+          </div>
+          <input id="dirtSlider" type="range" min="0" max="10" step="0.1" value="5">
+          <div class="slider-scale">
+            <span>Low</span><span>Medium</span><span>High</span>
+          </div>
+        </label>
 
-        <div class="visual-grid">
-          <article class="card chart-card">
-            <div class="card-heading">
-              <h3>Membership Functions</h3>
-              <p>Triangular fuzzy sets for dirt level, load size, and wash time.</p>
+        <label class="slider-block" for="loadSlider">
+          <div class="slider-title">
+            <span>Load Size</span>
+            <strong id="loadValue">5.0</strong>
+          </div>
+          <input id="loadSlider" type="range" min="0" max="10" step="0.1" value="5">
+          <div class="slider-scale">
+            <span>Small</span><span>Medium</span><span>Large</span>
+          </div>
+        </label>
+
+        <div class="preset-group">
+          <p class="eyebrow">Quick Presets</p>
+          <div class="preset-buttons">
+            <button class="chip is-active" data-dirt="5" data-load="5">Balanced Load</button>
+            <button class="chip" data-dirt="2.5" data-load="3">Quick Refresh</button>
+            <button class="chip" data-dirt="8" data-load="9">Heavy Duty</button>
+            <button class="chip" data-dirt="6.5" data-load="8">Family Cycle</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="system-insight">
+        <h3>System Log</h3>
+        <div id="systemInsight" class="insight-copy"></div>
+      </div>
+    </aside>
+
+    <!-- Main Visual Arena -->
+    <main class="main-arena">
+      <header class="arena-header">
+        <h2>Live Washing Analysis</h2>
+        <div class="status-indicator">
+          <span class="status-dot"></span> System Active
+        </div>
+      </header>
+
+      <div class="arena-content">
+        <!-- Top row: Primary output -->
+        <div class="primary-output-card">
+          <div class="circular-wrap">
+            <svg viewBox="0 0 120 120" class="circular-chart">
+              <defs>
+                <linearGradient id="gradientRing" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#3b82f6" />
+                  <stop offset="100%" stop-color="#0ea5e9" />
+                </linearGradient>
+              </defs>
+              <path class="circle-bg" d="M18 60 a 42 42 0 1 1 84 0 a 42 42 0 1 1 -84 0" />
+              <path class="circle" stroke-dasharray="264, 264" stroke-dashoffset="132" d="M18 60 a 42 42 0 1 1 84 0 a 42 42 0 1 1 -84 0" id="timeRing" />
+            </svg>
+            <div class="circular-readout">
+              <span class="eyebrow">Cycle Time</span>
+              <strong id="washTime">30.00 min</strong>
+              <p id="cycleName">Normal Wash</p>
             </div>
-            <canvas id="membershipCanvas" width="760" height="360"></canvas>
-          </article>
-
-          <article class="card surface-card">
-            <div class="card-heading">
-              <h3>Response Surface</h3>
-              <p>The output rises as dirt and load increase, which matches real washing behavior.</p>
+          </div>
+          <div class="output-stats">
+            <div class="stat-tile">
+              <span>Input Profile</span>
+              <strong id="inputProfile">Medium dirt | Medium load</strong>
             </div>
-            <canvas id="surfaceCanvas" width="760" height="360"></canvas>
-          </article>
+            <div class="stat-tile">
+              <span>Dominant Rule</span>
+              <strong id="dominantRule">Medium + Medium -> Medium</strong>
+            </div>
+          </div>
         </div>
-      </section>
+
+        <!-- Bottom row: Charts -->
+        <div class="charts-grid">
+          <div class="chart-container">
+            <h3>Response Surface</h3>
+            <canvas id="surfaceCanvas" width="600" height="300"></canvas>
+          </div>
+          <div class="chart-container">
+            <h3>Membership Functions</h3>
+            <canvas id="membershipCanvas" width="600" height="300"></canvas>
+          </div>
+        </div>
+      </div>
     </main>
   </div>
-
   <script src="script.js"></script>
 </body>
 </html>

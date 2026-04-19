@@ -9,8 +9,7 @@ const dominantRuleEl = document.getElementById("dominantRule");
 const systemInsightEl = document.getElementById("systemInsight");
 const heroTimeEl = document.getElementById("hero-time");
 const heroCycleEl = document.getElementById("hero-cycle");
-const gaugeNeedle = document.getElementById("gaugeNeedle");
-const gaugeProgress = document.getElementById("gaugeProgress");
+const timeRing = document.getElementById("timeRing");
 const ruleList = document.getElementById("ruleList");
 const presetButtons = document.querySelectorAll(".chip");
 
@@ -162,12 +161,12 @@ function drawMembershipFunctions() {
 
   ctx.clearRect(0, 0, width, height);
   const gradient = ctx.createLinearGradient(0, 0, width, height);
-  gradient.addColorStop(0, "rgba(125, 249, 198, 0.10)");
-  gradient.addColorStop(1, "rgba(92, 200, 255, 0.03)");
+  gradient.addColorStop(0, "rgba(59, 130, 246, 0.06)");
+  gradient.addColorStop(1, "rgba(14, 165, 233, 0.02)");
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, width, height);
 
-  ctx.strokeStyle = "rgba(255,255,255,0.08)";
+  ctx.strokeStyle = "rgba(15, 23, 42, 0.08)";
   ctx.lineWidth = 1;
   for (let i = 0; i <= 5; i += 1) {
     const y = margin.top + (plotHeight / 5) * i;
@@ -183,10 +182,10 @@ function drawMembershipFunctions() {
     { title: "Wash Time", mfs: washMFs, domain: 60, xStart: margin.left + (plotWidth * 2) / 3, xWidth: plotWidth / 3 - 18 }
   ];
 
-  const palette = ["#7df9c6", "#5cc8ff", "#ffb85c"];
+  const palette = ["#3b82f6", "#0ea5e9", "#f59e0b"];
 
   groups.forEach((group) => {
-    ctx.fillStyle = "rgba(255,255,255,0.88)";
+    ctx.fillStyle = "rgba(15, 23, 42, 0.9)";
     ctx.font = "600 16px Space Grotesk";
     ctx.fillText(group.title, group.xStart, 18);
 
@@ -206,7 +205,7 @@ function drawMembershipFunctions() {
       ctx.lineWidth = 3;
       ctx.stroke();
 
-      ctx.fillStyle = palette[index % palette.length];
+      ctx.fillStyle = "rgba(71, 85, 105, 0.9)";
       ctx.font = "500 12px Manrope";
       ctx.fillText(label, group.xStart + 8, margin.top + 18 + index * 18);
     });
@@ -222,7 +221,7 @@ function drawSurface(canvas, marker = null) {
   const plotHeight = height - margin.top - margin.bottom;
 
   ctx.clearRect(0, 0, width, height);
-  ctx.fillStyle = "rgba(255,255,255,0.015)";
+  ctx.fillStyle = "rgba(15, 23, 42, 0.02)";
   ctx.fillRect(0, 0, width, height);
 
   for (let i = 0; i <= 20; i += 1) {
@@ -240,10 +239,10 @@ function drawSurface(canvas, marker = null) {
     }
   }
 
-  ctx.strokeStyle = "rgba(255,255,255,0.12)";
+  ctx.strokeStyle = "rgba(15, 23, 42, 0.12)";
   ctx.strokeRect(margin.left, margin.top, plotWidth, plotHeight);
 
-  ctx.fillStyle = "rgba(255,255,255,0.8)";
+  ctx.fillStyle = "rgba(15, 23, 42, 0.8)";
   ctx.font = "600 15px Space Grotesk";
   ctx.fillText("Load Size", 14, 18);
   ctx.save();
@@ -256,7 +255,7 @@ function drawSurface(canvas, marker = null) {
   if (marker) {
     const x = margin.left + (marker.dirt / 10) * plotWidth;
     const y = margin.top + plotHeight - (marker.load / 10) * plotHeight;
-    ctx.strokeStyle = "#ffffff";
+    ctx.strokeStyle = "#0f172a";
     ctx.lineWidth = 1.5;
     ctx.beginPath();
     ctx.moveTo(x, margin.top);
@@ -265,32 +264,19 @@ function drawSurface(canvas, marker = null) {
     ctx.lineTo(margin.left + plotWidth, y);
     ctx.stroke();
 
-    ctx.fillStyle = "#ffffff";
+    ctx.fillStyle = "#0f172a";
     ctx.beginPath();
     ctx.arc(x, y, 5, 0, Math.PI * 2);
     ctx.fill();
   }
 }
 
-function updateGauge(value) {
-  if (!gaugeNeedle || !gaugeProgress) return;
+function updateCircularRing(value) {
+  if (!timeRing) return;
   const clamped = Math.max(0, Math.min(60, value));
   const ratio = clamped / 60;
-  const angle = -90 + ratio * 180;
-  gaugeNeedle.style.transform = `rotate(${angle}deg)`;
-
-  const startX = 20;
-  const startY = 130;
-  const endX = 220;
-  const endY = 130;
-  const largeArc = 0;
-  const sweepAngle = Math.PI * ratio;
-  const x = 120 - 100 * Math.cos(sweepAngle);
-  const y = 130 - 100 * Math.sin(sweepAngle);
-  const path = ratio === 0
-    ? `M ${startX} ${startY}`
-    : `M ${startX} ${startY} A 100 100 0 ${largeArc} 1 ${x} ${y}`;
-  gaugeProgress.setAttribute("d", path);
+  const offset = 264 - (ratio * 264);
+  timeRing.style.strokeDashoffset = offset;
 }
 
 function updatePresetState(dirt, load) {
@@ -322,40 +308,28 @@ function updateUI() {
   if (systemInsightEl) {
     systemInsightEl.innerHTML = `
     <p>
-      The controller reads <b>${dirt.toFixed(1)}</b> as <b>${dirtLabel}</b> dirt and <b>${load.toFixed(1)}</b> as
-      <b>${loadLabel}</b> load, then activates the fuzzy rule base to produce a smooth recommendation of
+      Our smart system evaluates <b>${dirt.toFixed(1)}</b> as <b>${dirtLabel}</b> dirt and <b>${load.toFixed(1)}</b> as
+      <b>${loadLabel}</b> load. Using advanced logic, it intelligently adapts the cycle to precisely
       <b>${crisp.toFixed(2)} minutes</b>.
     </p>
     <p>
-      Instead of abrupt switching between fixed cycles, the system blends overlapping membership functions. This provides continuous control outputs rather than discrete thresholds.
+      Unlike traditional machines with rigid cycles, our estimator provides a fluid and continuous recommendation tailored to your specific load.
     </p>
     <p>
-      The strongest active rule right now is <b>${dominantRule}</b>, and the resulting cycle classification is
+      The strongest determining factor right now is <b>${dominantRule}</b>, classifying your ideal cycle as a
       <b>${cycle}</b>.
     </p>
   `;
 
   }
 
-  updateGauge(crisp);
+  updateCircularRing(crisp);
   if (surfaceCanvas) drawSurface(surfaceCanvas, { dirt, load });
   if (miniSurfaceCanvas) drawSurface(miniSurfaceCanvas, { dirt, load });
   updatePresetState(dirt, load);
 }
 
-function setupGaugeGradient() {
-  const svg = document.querySelector(".gauge");
-  if (!svg) return;
-  const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
-  defs.innerHTML = `
-    <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#7df9c6"></stop>
-      <stop offset="50%" stop-color="#5cc8ff"></stop>
-      <stop offset="100%" stop-color="#ffb85c"></stop>
-    </linearGradient>
-  `;
-  svg.prepend(defs);
-}
+
 
 function bindEvents() {
   if (dirtSlider && loadSlider) {
@@ -375,7 +349,7 @@ function bindEvents() {
   }
 }
 
-setupGaugeGradient();
+
 if (ruleList) renderRules();
 if (membershipCanvas) drawMembershipFunctions();
 if (miniSurfaceCanvas && (!dirtSlider)) {
